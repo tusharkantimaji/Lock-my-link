@@ -1,0 +1,12 @@
+{
+  "name": "Lock my Link",
+  "version": "1.0.0",
+  "description": "Lock your URL with a sweet password",
+  "manifest_version": 3,
+  "author": "Tushar Kanti Maji",
+  "action":{
+      "default_popup": "index.html",
+      "default_title": "Lock my Link"
+  },
+  "permissions": ["tabs"]
+}
