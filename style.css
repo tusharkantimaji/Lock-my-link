@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  width: 500px;
+  color: #314d3e;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-right: 15px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #bcb8b8;
+}
+
+h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.container {
+  /* width: 80%; */
+  /* width: 460px; */
+  box-sizing: border-box;
+  margin: 5%;
+  background-color: #fff;
+  padding: 5%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#page1 {
+  display: block;
+}
+
+#page2 {
+  display: none;
+}
+
+#page3 {
+  display: none;
+}
+
+.successMessage {
+  text-align: center;
+  color: green;
+}
+
+#areYouSure {
+  color: darkred;
+  padding: 2px;
+  margin-top: 4px;
+}
+
+#currentTabUrl {
+  color: rgb(60, 4, 200);
+  padding: 2px;
+}
+
+#lockBtn {
+  background-color: #eb2c2c;
+  /* color: #111010; */
+  transition: background-color 0.3s ease;
+}
+
+#passwordContent {
+  padding: 2px;
+  margin-bottom: 4px;
+  color: rgb(21, 139, 0);
+}
+
+#passwordEntered {
+  padding: 2px;
+  margin-bottom: 4px;
+}
+
+.showPassword {
+  padding: 2px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-top: 10px;
+  /* width: 100%; */
+  background-color: #3498db;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}

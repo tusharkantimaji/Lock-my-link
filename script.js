@@ -1,4 +1,4 @@
-async function getCurrentTab() {
+document.addEventListener("DOMContentLoaded", async () => {
   let queryOptions = { active: true, lastFocusedWindow: true };
   let [tab] = await chrome.tabs.query(queryOptions);
 
@@ -7,8 +7,28 @@ async function getCurrentTab() {
   const urlObject = new URL(currentUrl);
   const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  const rootElement = document.getElementById('root');
-  rootElement.innerHTML = `Are you sure you want to lock this URL: ${urlBeforeSearchParam} ?`;
-}
+  const currentTabUrlElement = document.getElementById('currentTabUrl');
+  currentTabUrlElement.innerHTML = urlBeforeSearchParam;
 
-getCurrentTab();
+  const page1Element = document.getElementById('page1');
+  const page2Element = document.getElementById('page2');
+  const page3Element = document.getElementById('page3');
+
+  document.getElementById('confirmBtn').addEventListener('click', function() {
+    const password = prompt('Enter password:');
+    if (password !== null) {
+      const showPasswordElement = document.getElementById('passwordContent');
+
+      showPasswordElement.innerHTML = ` ${password}`;
+      page1Element.style.display = 'none';
+      page2Element.style.display = 'block';
+    }
+  });
+
+
+  document.getElementById('lockBtn').addEventListener('click', function() {
+    page2Element.style.display = 'none';
+    page3Element.style.display = 'block';
+  });
+
+});

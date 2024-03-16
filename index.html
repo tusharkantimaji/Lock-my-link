@@ -4,9 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lock My Link</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <p id="root">Lock My Link</p>
+<body >
+  <div  class="container">
+
+    <div id="page1">
+      <h3>Welcome to Lock My Link</h3>
+      <p id="areYouSure">Are you sure you want to lock this URL:</p>
+      <p id="currentTabUrl" >URL</p>
+      <button id="confirmBtn" class="btn">Confirm</button>
+    </div>
+
+    <div id="page2">
+      <div class="showPassword">
+        <h3 id="paswordEntered">Entered Password</h3>
+        <h3 id="passwordContent">Password</h3>
+      </div>
+      <button id="lockBtn" class="btn">Lock</button>
+    </div>
+
+    <div id="page3">
+      <div class="successMessage">
+        <h1>Congratulations!!!</h1>
+        <p>Successfully Locked the Page</p>
+      </div>
+    </div>
+
+  </div>
+  <script src="popup.js"></script>
+</body>
   <script src="script.js"></script>
 </body>
 </html>
