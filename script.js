@@ -1,68 +1,20 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  let queryOptions = { active: true, lastFocusedWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
-
-  const currentUrl = tab.url;
-
-  const urlObject = new URL(currentUrl);
-  const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
-
-  const currentTabUrlElement = document.getElementById('currentTabUrl');
-  currentTabUrlElement.innerHTML = urlBeforeSearchParam;
+  const urlBeforeSearchParam = await getCurrentTabUrl();
   let isCurrentUrlLocked = false; // TODO: await isUrlLocked(currentUrl);
 
-  const page0Element = document.getElementById('page0');
-  const page1Element = document.getElementById('page1');
-  const page2Element = document.getElementById('page2');
-  const page3Element = document.getElementById('page3');
-  const page4Element = document.getElementById('page4');
-  const lockOrUnlockBtnElement = document.getElementById('lockOrUnlockBtn');
-  const areYouSureElement = document.getElementById('areYouSure');
+  const allElementObjects = getAllElementObjects();
 
-  updateLockAndUnlockButton(isCurrentUrlLocked, lockOrUnlockBtnElement, areYouSureElement);
+  allElementObjects.currentTabUrlElement.innerHTML = urlBeforeSearchParam;
+  updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects);
 
-  document.getElementById('setPasswordBtn').addEventListener('click', function() {
-    const password = prompt('Enter password:');
-    if (password !== null) {
-      page0Element.style.display = 'none';
-      page1Element.style.display = 'block';
-    }
-  });
+  document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
   const goHomeButtons = document.querySelectorAll('.goHomeBtn');
   goHomeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      page1Element.style.display = 'none';
-      page3Element.style.display = 'none';
-      page4Element.style.display = 'none';
-      page2Element.style.display = 'block';
-    });
+    button.addEventListener('click', () => handleGoHomeClick(allElementObjects));
   });
 
-  // TODO:
-  document.getElementById('lockOrUnlockBtn').addEventListener('click', async function() {
-    let successfulUpdate = true; // await storePassword(currentUrl, password);
-    if (isCurrentUrlLocked) {
-      // await unlockUrl(currentUrl);
-      successfulUpdate = true;
-    }
-    else {
-      // await lockUrl(currentUrl);
-      successfulUpdate = true;
-    }
-
-    if (successfulUpdate) {
-      page3Element.style.display = 'block';
-      isCurrentUrlLocked = !isCurrentUrlLocked;
-      updateLockAndUnlockButton(isCurrentUrlLocked, lockOrUnlockBtnElement, areYouSureElement);
-    }
-    else {
-      page4Element.style.display = 'block';
-    }
-    
-    page2Element.style.display = 'none';
-  });
-
+  document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(isCurrentUrlLocked, allElementObjects));
 });
 
 async function storePassword(url, password) {
@@ -71,7 +23,7 @@ async function storePassword(url, password) {
   return false;
 }
 
-function updateLockAndUnlockButton(isCurrentUrlLocked, lockOrUnlockBtnElement, areYouSureElement) {
+function updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects) {
   let homePageInfo = {
     buttonText: String,
     buttonColor: String,
@@ -91,8 +43,80 @@ function updateLockAndUnlockButton(isCurrentUrlLocked, lockOrUnlockBtnElement, a
       descriptionMessage: 'To lock this URL, Click the Lock Button'
     }
   }
-  lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
-  lockOrUnlockBtnElement.style.backgroundColor = homePageInfo.buttonColor;
-  areYouSureElement.innerHTML = homePageInfo.descriptionMessage;
-  areYouSureElement.style.color = homePageInfo.buttonColor;
+  allElementObjects.lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
+  allElementObjects.lockOrUnlockBtnElement.style.backgroundColor = homePageInfo.buttonColor;
+  allElementObjects.areYouSureElement.innerHTML = homePageInfo.descriptionMessage;
+  allElementObjects.areYouSureElement.style.color = homePageInfo.buttonColor;
+}
+
+async function getCurrentTabUrl() {
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
+
+  const currentUrl = tab.url;
+
+  const urlObject = new URL(currentUrl);
+  const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
+
+  return urlBeforeSearchParam;
+}
+
+function getAllElementObjects() {
+  const page0Element = document.getElementById('page0');
+  const page1Element = document.getElementById('page1');
+  const page2Element = document.getElementById('page2');
+  const page3Element = document.getElementById('page3');
+  const page4Element = document.getElementById('page4');
+  const currentTabUrlElement = document.getElementById('currentTabUrl');
+  const lockOrUnlockBtnElement = document.getElementById('lockOrUnlockBtn');
+  const areYouSureElement = document.getElementById('areYouSure');
+
+  return {
+    page0Element,
+    page1Element,
+    page2Element,
+    page3Element,
+    page4Element,
+    currentTabUrlElement,
+    lockOrUnlockBtnElement,
+    areYouSureElement
+  };
+}
+
+function handleSetPasswordClick(allElementObjects) {
+  const password = prompt('Enter password:');
+  if (password !== null) {
+    allElementObjects.page0Element.style.display = 'none';
+    allElementObjects.page1Element.style.display = 'block';
+  }
+}
+
+function handleGoHomeClick(allElementObjects) {
+  allElementObjects.page1Element.style.display = 'none';
+  allElementObjects.page3Element.style.display = 'none';
+  allElementObjects.page4Element.style.display = 'none';
+  allElementObjects.page2Element.style.display = 'block';
+}
+
+function lockOrUnlockBtnClick(isCurrentUrlLocked, allElementObjects) {
+  let successfulUpdate = true; // await storePassword(currentUrl, password);
+  if (isCurrentUrlLocked) {
+    // await unlockUrl(currentUrl);
+    successfulUpdate = true;
+  }
+  else {
+    // await lockUrl(currentUrl);
+    successfulUpdate = true;
+  }
+
+  if (successfulUpdate) {
+    allElementObjects.page3Element.style.display = 'block';
+    isCurrentUrlLocked = !isCurrentUrlLocked;
+    updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects);
+  }
+  else {
+    allElementObjects.page4Element.style.display = 'block';
+  }
+  
+  allElementObjects.page2Element.style.display = 'none';
 }
