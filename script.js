@@ -109,7 +109,7 @@ function handleGoHomeClick(allElementObjects) {
   allElementObjects.page1Element.style.display = 'none';
   allElementObjects.page3Element.style.display = 'none';
   allElementObjects.page4Element.style.display = 'none';
-  allElementObjects.page2Element.style.display = 'block';
+  allElementObjects.page2Element.style.display = 'grid';
 }
 
 function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
@@ -153,7 +153,7 @@ function decideLandingPageView(allElementObjects) {
   const storedPassword = localStorage.getItem(localStoragePasswordKey);
   
   if (storedPassword) {
-    allElementObjects.page2Element.style.display = 'block';
+    allElementObjects.page2Element.style.display = 'grid';
   } else {
     allElementObjects.page0Element.style.display = 'block';
   }
