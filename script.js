@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const page1Element = document.getElementById('page1');
   const page2Element = document.getElementById('page2');
   const page3Element = document.getElementById('page3');
+  const page4Element = document.getElementById('page4');
 
   document.getElementById('confirmBtn').addEventListener('click', function() {
     const password = prompt('Enter password:');
@@ -26,9 +27,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
 
-  document.getElementById('lockBtn').addEventListener('click', function() {
+  document.getElementById('lockBtn').addEventListener('click', async function() {
+    const successStoring = await storePassword(currentUrl, password);
+
+    if (successStoring) {
+      page3Element.style.display = 'block';
+    }
+    else {
+      page4Element.style.display = 'block';
+    }
+    
     page2Element.style.display = 'none';
-    page3Element.style.display = 'block';
   });
 
 });
+
+async function storePassword(url, password) {
+  console.log(url, password);
+
+  return false;
+}
