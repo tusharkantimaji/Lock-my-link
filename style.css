@@ -20,9 +20,9 @@ h3 {
 }
 
 .container {
-  margin: 5%;
+  margin: 2px 5%;
   padding: 5%;
-  margin-top: 2px;
+  margin-bottom: 20px;
   box-sizing: border-box;
   background-color: #fff;
   border-radius: 10px;
@@ -40,7 +40,7 @@ h3 {
 }
 
 #page2 {
-  display: none;
+  display: block;
 }
 
 #page3 {
@@ -75,7 +75,7 @@ h3 {
 
 .brandName {
   color: black;
-  background-image: linear-gradient(to right, yellow, red, red, rgb(131, 2, 2));
+  background-image: linear-gradient(to right, white, rgba(255, 255, 0, 0.500), rgba(255, 0, 0, 0.500), red, rgb(131, 2, 2, 0.500));
   padding: 2px;
   border-radius: 10px;
   margin: 10px;
@@ -83,6 +83,7 @@ h3 {
   margin-bottom: 20px;
   font-size: 20px;
   margin: 5px 5%;
+  font-family: Monospace;
 }
 
 .goHomeBtn {
@@ -131,4 +132,48 @@ h3 {
 
 .btn:hover {
   background-color: #2980b9;
+}
+
+#updateAndForgotPassword {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 5%;
+  /* padding: 0 5%; */
+}
+
+.updatePassBtn, .forgotPassBtn, .deleteAllDataBtn {
+  color: black;
+  width: 33%;
+  margin: 0;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.updatePassBtn {
+  margin-right: 5px;
+  background-color: rgba(0, 255, 0, 0.526);
+}
+
+.forgotPassBtn {
+  margin: 0 5px;
+  margin-bottom: 4px;
+  background-color: rgba(255, 255, 0, 0.476);
+}
+
+.deleteAllDataBtn {
+  margin-left: 5px;
+  background-color: rgba(255, 0, 0, 0.476);
+}
+
+.updatePassBtn:hover {
+  background-color: green;
+}
+
+.forgotPassBtn:hover {
+  background-color: yellow;
+}
+
+.deleteAllDataBtn:hover {
+  background-color: red;
 }

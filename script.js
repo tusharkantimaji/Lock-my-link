@@ -58,15 +58,15 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
 }
 
 async function getCurrentTabUrl() {
-  let queryOptions = { active: true, lastFocusedWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
+  // let queryOptions = { active: true, lastFocusedWindow: true };
+  // let [tab] = await chrome.tabs.query(queryOptions);
 
-  const currentUrl = tab.url;
+  // const currentUrl = tab.url;
 
-  const urlObject = new URL(currentUrl);
-  const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
+  // const urlObject = new URL(currentUrl);
+  // const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  return urlBeforeSearchParam;
+  return "urlBeforeSearchParam";
 }
 
 function getAllElementObjects() {
