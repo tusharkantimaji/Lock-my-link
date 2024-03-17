@@ -75,7 +75,7 @@ h3 {
 
 .brandName {
   color: black;
-  background-image: linear-gradient(to right, yellow, red, black);
+  background-image: linear-gradient(to right, yellow, red, red, rgb(131, 2, 2));
   padding: 2px;
   border-radius: 10px;
   margin: 10px;
@@ -95,7 +95,7 @@ h3 {
 }
 
 #lockBtn {
-  background-color: #eb2c2c;
+  width: 100%;
 }
 
 #passwordContent {
