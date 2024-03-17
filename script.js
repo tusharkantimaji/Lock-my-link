@@ -1,10 +1,13 @@
+const localStoragePasswordKey = "lockMyLinkPassword";
+const localStorageLockedUrlsKey = "lockMyLinkLockedUrls";
+
 document.addEventListener("DOMContentLoaded", async () => {
-  setPasswordIfNotSet();
+  const allElementObjects = getAllElementObjects();
+
+  decideLandingPageView(allElementObjects);
 
   const urlBeforeSearchParam = await getCurrentTabUrl();
-  let isCurrentUrlLockedObj = { isCurrentUrlLocked: false }; // TODO: await isUrlLocked(currentUrl);
-
-  const allElementObjects = getAllElementObjects();
+  let isCurrentUrlLockedObj = isUrlLocked(urlBeforeSearchParam);
 
   allElementObjects.currentTabUrlElement.innerHTML = urlBeforeSearchParam;
   updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects);
@@ -16,8 +19,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     button.addEventListener('click', () => handleGoHomeClick(allElementObjects));
   });
 
-  document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(isCurrentUrlLockedObj, allElementObjects));
+  document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(urlBeforeSearchParam, isCurrentUrlLockedObj, allElementObjects));
 });
+
+function isUrlLocked(url) {
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  return lockedUrlsObj[url] ? {isCurrentUrlLocked: true} : {isCurrentUrlLocked: false};
+}
 
 function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
   let homePageInfo = {
@@ -26,17 +35,20 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
     descriptionMessage: String
   }
 
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const storedPassword = localStorage.getItem(localStoragePasswordKey);
+
   if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
     homePageInfo = {
       buttonText: 'Unlock',
       buttonColor: 'green',
-      descriptionMessage: 'To unlock this URL, Click the Unlock Button'
+      descriptionMessage: 'To unlock this URL, Click the Unlock Button' + " " + "Password: " + storedPassword + " " + "Locked URLs: " + lockedUrls
     }
   } else {
     homePageInfo = {
       buttonText: 'Lock',
       buttonColor: 'red',
-      descriptionMessage: 'To lock this URL, Click the Lock Button'
+      descriptionMessage: 'To lock this URL, Click the Lock Button' + " " + "Password: " + storedPassword + " " + "Locked URLs: " + lockedUrls
     }
   }
   allElementObjects.lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
@@ -54,7 +66,7 @@ async function getCurrentTabUrl() {
   const urlObject = new URL(currentUrl);
   const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  return "urlBeforeSearchParam";
+  return urlBeforeSearchParam;
 }
 
 function getAllElementObjects() {
@@ -79,12 +91,18 @@ function getAllElementObjects() {
   };
 }
 
-function handleSetPasswordClick(allElementObjects) {
+async function handleSetPasswordClick(allElementObjects) {
   const password = prompt('Enter password:');
   if (password !== null) {
+    await storePassword(password);
     allElementObjects.page0Element.style.display = 'none';
     allElementObjects.page1Element.style.display = 'block';
   }
+}
+
+async function storePassword(password) {
+  localStorage.setItem(localStoragePasswordKey, password);
+  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify({}));
 }
 
 function handleGoHomeClick(allElementObjects) {
@@ -94,14 +112,14 @@ function handleGoHomeClick(allElementObjects) {
   allElementObjects.page2Element.style.display = 'block';
 }
 
-function lockOrUnlockBtnClick(isCurrentUrlLockedObj, allElementObjects) {
+function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
   let successfulUpdate = false;
   if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
-    // await unlockUrl(currentUrl);
+    unlockUrl(currentUrl);
     successfulUpdate = true;
   }
   else {
-    // await lockUrl(currentUrl);
+    lockUrl(currentUrl);
     successfulUpdate = true;
   }
 
@@ -117,9 +135,26 @@ function lockOrUnlockBtnClick(isCurrentUrlLockedObj, allElementObjects) {
   allElementObjects.page2Element.style.display = 'none';
 }
 
-function setPasswordIfNotSet() {
-  const password = localStorage.getItem('password');
-  if (password === null) {
-    localStorage.setItem('password', '');
+function lockUrl(currentUrl) {
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  lockedUrlsObj[currentUrl] = true;
+  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(lockedUrlsObj));
+}
+
+function unlockUrl(currentUrl) {
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  delete lockedUrlsObj[currentUrl];
+  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(lockedUrlsObj));
+}
+
+function decideLandingPageView(allElementObjects) {
+  const storedPassword = localStorage.getItem(localStoragePasswordKey);
+  
+  if (storedPassword) {
+    allElementObjects.page2Element.style.display = 'block';
+  } else {
+    allElementObjects.page0Element.style.display = 'block';
   }
 }
