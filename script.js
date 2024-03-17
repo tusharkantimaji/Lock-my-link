@@ -94,4 +94,5 @@ function updateLockAndUnlockButton(isCurrentUrlLocked, lockOrUnlockBtnElement, a
   lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
   lockOrUnlockBtnElement.style.backgroundColor = homePageInfo.buttonColor;
   areYouSureElement.innerHTML = homePageInfo.descriptionMessage;
+  areYouSureElement.style.color = homePageInfo.buttonColor;
 }
