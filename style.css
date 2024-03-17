@@ -180,6 +180,6 @@ h3 {
 }
 
 .deleteAllDataBtn:hover {
-  background-color: red;
+  background-color: rgb(245, 50, 50);
   border: 1px solid black;
 }

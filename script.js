@@ -55,6 +55,7 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
   allElementObjects.lockOrUnlockBtnElement.style.backgroundColor = homePageInfo.buttonColor;
   allElementObjects.areYouSureElement.innerHTML = homePageInfo.descriptionMessage;
   allElementObjects.areYouSureElement.style.color = homePageInfo.buttonColor;
+  allElementObjects.areYouSureElement.style.color = homePageInfo.buttonColor;
 }
 
 async function getCurrentTabUrl() {
