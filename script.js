@@ -24,17 +24,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  document.getElementById('goHomeBtn').addEventListener('click', function() {
-    console.log("goHomeBtn clicked")
-    page1Element.style.display = 'none';
-    page3Element.style.display = 'none';
-    page4Element.style.display = 'none';
-    page2Element.style.display = 'block';
+  const goHomeButtons = document.querySelectorAll('.goHomeBtn');
+  goHomeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      console.log("goHomeBtn clicked")
+      page1Element.style.display = 'none';
+      page3Element.style.display = 'none';
+      page4Element.style.display = 'none';
+      page2Element.style.display = 'block';
+    });
   });
 
   document.getElementById('lockBtn').addEventListener('click', async function() {
     console.log("lockBto clicked")
-    const successStoring = true; // await storePassword(currentUrl, password);
+    const successStoring = false; // await storePassword(currentUrl, password);
 
     if (successStoring) {
       page3Element.style.display = 'block';

@@ -55,6 +55,11 @@ h3 {
   color: green;
 }
 
+.errorMessage {
+  text-align: center;
+  color: rgb(255, 77, 6);
+}
+
 #areYouSure {
   color: darkred;
   padding: 2px;
@@ -70,7 +75,7 @@ h3 {
 
 .brandName {
   color: black;
-  background-image: linear-gradient(to right, yellow, green);
+  background-image: linear-gradient(to right, yellow, red, black);
   padding: 2px;
   border-radius: 10px;
   margin: 10px;
@@ -80,7 +85,7 @@ h3 {
   margin: 5px 5%;
 }
 
-#goHomeBtn {
+.goHomeBtn {
   background-color: yellow;
   color: black;
 }
