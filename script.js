@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  setPasswordIfNotSet();
+
   const urlBeforeSearchParam = await getCurrentTabUrl();
-  let isCurrentUrlLocked = false; // TODO: await isUrlLocked(currentUrl);
+  let isCurrentUrlLockedObj = { isCurrentUrlLocked: false }; // TODO: await isUrlLocked(currentUrl);
 
   const allElementObjects = getAllElementObjects();
 
   allElementObjects.currentTabUrlElement.innerHTML = urlBeforeSearchParam;
-  updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects);
+  updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects);
 
   document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
@@ -14,23 +16,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     button.addEventListener('click', () => handleGoHomeClick(allElementObjects));
   });
 
-  document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(isCurrentUrlLocked, allElementObjects));
+  document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(isCurrentUrlLockedObj, allElementObjects));
 });
 
-async function storePassword(url, password) {
-  console.log(url, password);
-
-  return false;
-}
-
-function updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects) {
+function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
   let homePageInfo = {
     buttonText: String,
     buttonColor: String,
     descriptionMessage: String
   }
 
-  if (isCurrentUrlLocked) {
+  if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
     homePageInfo = {
       buttonText: 'Unlock',
       buttonColor: 'green',
@@ -58,7 +54,7 @@ async function getCurrentTabUrl() {
   const urlObject = new URL(currentUrl);
   const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  return urlBeforeSearchParam;
+  return "urlBeforeSearchParam";
 }
 
 function getAllElementObjects() {
@@ -98,9 +94,9 @@ function handleGoHomeClick(allElementObjects) {
   allElementObjects.page2Element.style.display = 'block';
 }
 
-function lockOrUnlockBtnClick(isCurrentUrlLocked, allElementObjects) {
-  let successfulUpdate = true; // await storePassword(currentUrl, password);
-  if (isCurrentUrlLocked) {
+function lockOrUnlockBtnClick(isCurrentUrlLockedObj, allElementObjects) {
+  let successfulUpdate = false;
+  if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
     // await unlockUrl(currentUrl);
     successfulUpdate = true;
   }
@@ -111,12 +107,19 @@ function lockOrUnlockBtnClick(isCurrentUrlLocked, allElementObjects) {
 
   if (successfulUpdate) {
     allElementObjects.page3Element.style.display = 'block';
-    isCurrentUrlLocked = !isCurrentUrlLocked;
-    updateLockAndUnlockButton(isCurrentUrlLocked, allElementObjects);
+    isCurrentUrlLockedObj.isCurrentUrlLocked = !isCurrentUrlLockedObj.isCurrentUrlLocked;
+    updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects);
   }
   else {
     allElementObjects.page4Element.style.display = 'block';
   }
   
   allElementObjects.page2Element.style.display = 'none';
+}
+
+function setPasswordIfNotSet() {
+  const password = localStorage.getItem('password');
+  if (password === null) {
+    localStorage.setItem('password', '');
+  }
 }
