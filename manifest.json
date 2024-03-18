@@ -5,8 +5,21 @@
   "manifest_version": 3,
   "author": "Tushar Kanti Maji",
   "action":{
-      "default_popup": "index.html",
+      "default_popup": "HTML/index.html",
       "default_title": "Lock my Link"
   },
-  "permissions": ["tabs"]
+  "permissions": [
+    "tabs",
+    "storage",
+    "activeTab",
+    "webRequest",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "JS/background.js"
+  }
 }

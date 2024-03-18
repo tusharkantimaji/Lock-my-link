@@ -42,13 +42,13 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
     homePageInfo = {
       buttonText: 'Unlock',
       buttonColor: 'green',
-      descriptionMessage: 'To unlock this URL, Click the Unlock Button' + " " + "Password: " + storedPassword + " " + "Locked URLs: " + lockedUrls
+      descriptionMessage: 'To unlock this URL, Click the Unlock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
     }
   } else {
     homePageInfo = {
       buttonText: 'Lock',
       buttonColor: 'red',
-      descriptionMessage: 'To lock this URL, Click the Lock Button' + " " + "Password: " + storedPassword + " " + "Locked URLs: " + lockedUrls
+      descriptionMessage: 'To lock this URL, Click the Lock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
     }
   }
   allElementObjects.lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
@@ -59,15 +59,15 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
 }
 
 async function getCurrentTabUrl() {
-  // let queryOptions = { active: true, lastFocusedWindow: true };
-  // let [tab] = await chrome.tabs.query(queryOptions);
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
 
-  // const currentUrl = tab.url;
+  const currentUrl = tab.url;
 
-  // const urlObject = new URL(currentUrl);
-  // const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
+  const urlObject = new URL(currentUrl);
+  const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  return "urlBeforeSearchParam";
+  return urlBeforeSearchParam;
 }
 
 function getAllElementObjects() {
@@ -79,6 +79,7 @@ function getAllElementObjects() {
   const currentTabUrlElement = document.getElementById('currentTabUrl');
   const lockOrUnlockBtnElement = document.getElementById('lockOrUnlockBtn');
   const areYouSureElement = document.getElementById('areYouSure');
+  const updateDataSectionElement = document.getElementById('updateDataSection');
 
   return {
     page0Element,
@@ -88,7 +89,8 @@ function getAllElementObjects() {
     page4Element,
     currentTabUrlElement,
     lockOrUnlockBtnElement,
-    areYouSureElement
+    areYouSureElement,
+    updateDataSectionElement
   };
 }
 
@@ -98,6 +100,7 @@ async function handleSetPasswordClick(allElementObjects) {
     await storePassword(password);
     allElementObjects.page0Element.style.display = 'none';
     allElementObjects.page1Element.style.display = 'block';
+    allElementObjects.updateDataSectionElement.style.display = 'block';
   }
 }
 
@@ -110,7 +113,7 @@ function handleGoHomeClick(allElementObjects) {
   allElementObjects.page1Element.style.display = 'none';
   allElementObjects.page3Element.style.display = 'none';
   allElementObjects.page4Element.style.display = 'none';
-  allElementObjects.page2Element.style.display = 'grid';
+  allElementObjects.page2Element.style.display = 'block'; //TODO: GRID
 }
 
 function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
@@ -154,8 +157,9 @@ function decideLandingPageView(allElementObjects) {
   const storedPassword = localStorage.getItem(localStoragePasswordKey);
   
   if (storedPassword) {
-    allElementObjects.page2Element.style.display = 'grid';
+    allElementObjects.page2Element.style.display = 'block'; // TODO: GRID
   } else {
     allElementObjects.page0Element.style.display = 'block';
+    allElementObjects.updateDataSectionElement.style.display = 'none';
   }
 }
