@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let isCurrentUrlLockedObj = isUrlLocked(urlBeforeSearchParam);
 
   document.getElementById('currentTabUrl').innerHTML = urlBeforeSearchParam;
-  updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects);
+  await updateLockAndUnlockButton(isCurrentUrlLockedObj);
 
   document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
@@ -85,17 +85,11 @@ function handleDeleteLockedUrlsBtnClick(allElementObjects) {
   allElementObjects.page1Element.style.display = 'block';
 }
 
-function handleDeleteDataButtonClick(allElementObjects) {
-  deactivateAllPages(allElementObjects);
-  allElementObjects.page4Element.style.display = 'block';
-}
-
 function deactivateAllPages(allElementObjects) {
   allElementObjects.page0Element.style.display = 'none';
   allElementObjects.page1Element.style.display = 'none';
   allElementObjects.page2Element.style.display = 'none';
   allElementObjects.page3Element.style.display = 'none';
-  allElementObjects.page4Element.style.display = 'none';
 }
 
 function isUrlLocked(url) {
@@ -104,7 +98,10 @@ function isUrlLocked(url) {
   return lockedUrlsObj[url] ? {isCurrentUrlLocked: true} : {isCurrentUrlLocked: false};
 }
 
-function updateLockAndUnlockButton(isCurrentUrlLockedObj) {
+async function updateLockAndUnlockButton() {
+  const urlBeforeSearchParam = await getCurrentTabUrl();
+  let isCurrentUrlLockedObj = isUrlLocked(urlBeforeSearchParam);
+
   let homePageInfo = {
     buttonText: String,
     buttonColor: String,
@@ -150,14 +147,12 @@ function getAllElementObjects() {
   const page1Element = document.getElementById('page1');
   const page2Element = document.getElementById('page2');
   const page3Element = document.getElementById('page3');
-  const page4Element = document.getElementById('page4');
 
   return {
     page0Element,
     page1Element,
     page2Element,
     page3Element,
-    page4Element,
   };
 }
 
@@ -165,6 +160,7 @@ async function handleSetPasswordClick(allElementObjects) {
   const password = prompt('Enter password:');
   if (password !== null && password !== "") {
     await storePassword(password);
+    localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify({}));
     document.getElementById('successMessageText').innerHTML = "Password set successfully!";
     allElementObjects.page0Element.style.display = 'none';
     allElementObjects.page1Element.style.display = 'block';
@@ -174,17 +170,23 @@ async function handleSetPasswordClick(allElementObjects) {
 
 async function storePassword(password) {
   localStorage.setItem(localStoragePasswordKey, password);
-  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify({}));
 }
 
-function handleGoHomeClick(allElementObjects) {
+async function handleGoHomeClick(allElementObjects) {
   deactivateAllPages(allElementObjects);
-  allElementObjects.page2Element.style.display = 'block'; //TODO: GRID
+  await updateLockAndUnlockButton()
+  allElementObjects.page2Element.style.display = 'block';
 }
 
-function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
+async function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
   let successfulUpdate = false;
   if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
+    if (!matchPassword()) {
+      document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
+      deactivateAllPages(allElementObjects);
+      allElementObjects.page3Element.style.display = 'block';
+      return;
+    }
     unlockUrl(currentUrl);
     successfulUpdate = true;
   }
@@ -197,7 +199,7 @@ function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjec
     document.getElementById('successMessageText').innerHTML = "Link Status updated successfully!";
     allElementObjects.page1Element.style.display = 'block';
     isCurrentUrlLockedObj.isCurrentUrlLocked = !isCurrentUrlLockedObj.isCurrentUrlLocked;
-    updateLockAndUnlockButton(isCurrentUrlLockedObj);
+    await updateLockAndUnlockButton();
   }
   else {
     allElementObjects.page3Element.style.display = 'block';
@@ -235,7 +237,7 @@ function decideLandingPageView(allElementObjects) {
   const storedPassword = localStorage.getItem(localStoragePasswordKey);
   
   if (storedPassword) {
-    allElementObjects.page2Element.style.display = 'block'; // TODO: GRID
+    allElementObjects.page2Element.style.display = 'block';
   } else {
     allElementObjects.page0Element.style.display = 'block';
     document.getElementById('updateDataSection').style.display = 'none';

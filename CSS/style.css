@@ -30,7 +30,6 @@ h3 {
 }
 
 #page0 {
-  display: block;
   text-align: center;
   display: none;
 }
@@ -47,22 +46,19 @@ h3 {
   display: none;
 }
 
-#page4 {
-  display: none;
+.successMessage {
   text-align: center;
 }
 
-/* #page5 {
-  display: none;
-} */
-
-.successMessage {
-  text-align: center;
-  color: green;
+.successMessage h1 {
+  color: rgb(32, 199, 32);
 }
 
 .errorMessage {
   text-align: center;
+}
+
+.errorMessage h1 {
   color: rgb(255, 77, 6);
 }
 
