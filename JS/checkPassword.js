@@ -7,6 +7,7 @@ document.getElementById('submitButton').addEventListener('click', function() {
   chrome.runtime.sendMessage({ type: 'checkPassword', password: password }, function(response) {
     if (password === storedPassword) {
       document.getElementById('statusMessage').textContent = 'Password correct! You can access blocked sites.';
+      window.location.href = "http://www.facebook.com";
     } else {
       document.getElementById('statusMessage').textContent = 'Incorrect password! Access denied.';
     }
