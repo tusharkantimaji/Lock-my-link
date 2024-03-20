@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('updatePassBtn').addEventListener('click', () => handleUpdatePassButtonClick(allElementObjects));
 
-  document.getElementById('deleteAllDataBtn').addEventListener('click', () => handleDeleteDataButtonClick(allElementObjects));
   document.getElementById('deleteLockedUrlsBtn').addEventListener('click', () => handleDeleteLockedUrlsBtnClick(allElementObjects));
   document.getElementById('deletePassBtn').addEventListener('click', () => handleDeletePassBtnClick(allElementObjects));
 

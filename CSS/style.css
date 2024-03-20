@@ -150,9 +150,9 @@ h3 {
 }
 
 
-#updatePassBtn, #forgotPassBtn, #deleteAllDataBtn {
+#updatePassBtn, #deleteLockedUrlsBtn, #deletePassBtn {
   color: black;
-  width: 33%;
+  width: 50%;
   margin: 0;
   border-radius: 10px;
   font-size: 14px;
@@ -163,11 +163,11 @@ h3 {
   background-color: rgba(0, 255, 0, 0.526);
 }
 
-#forgotPassBtn {
+#deleteLockedUrlsBtn {
   background-color: rgba(255, 255, 0, 0.600);
 }
 
-#deleteAllDataBtn {
+#deletePassBtn {
   background-color: rgba(255, 0, 0, 0.476);
 }
 
@@ -175,25 +175,25 @@ h3 {
   width: 100%
 }
 
-#deleteLockedUrlsBtn, #deletePassBtn {
+/* #deleteLockedUrlsBtn, #deletePassBtn {
   background-color: rgba(255, 100, 0, 0.476);
-}
-
+} */
+/* 
 #deleteLockedUrlsBtn:hover, #deletePassBtn:hover {
   background-color: rgba(255, 0, 0, 1);
-}
+} */
 
 #updatePassBtn:hover {
   background-color: rgb(0, 255, 0);
   border: 1px solid black;
 }
 
-#forgotPassBtn:hover {
+#deleteLockedUrlsBtn:hover {
   background-color: yellow;
   border: 1px solid black;
 }
 
-#deleteAllDataBtn:hover {
+#deletePassBtn:hover {
   background-color: rgb(245, 68, 68);
   border: 1px solid black;
 }
