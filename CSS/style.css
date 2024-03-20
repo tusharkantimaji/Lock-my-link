@@ -149,9 +149,6 @@ h3 {
   margin-bottom: 5px;
 }
 
-#updateDataSection:hover {
-  border: 1px solid red;
-}
 
 #updatePassBtn, #forgotPassBtn, #deleteAllDataBtn {
   color: black;
@@ -205,4 +202,11 @@ h3 {
   border: 1px solid black;
   border-radius: 10px;
   padding: 2px;
+}
+
+.disclaimer {
+  font-size: 10px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
 }

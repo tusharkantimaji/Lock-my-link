@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
+  document.getElementById('updatePassBtn').addEventListener('click', () => handleUpdatePassButtonClick(allElementObjects));
+
   document.getElementById('deleteAllDataBtn').addEventListener('click', () => handleDeleteDataButtonClick(allElementObjects));
   document.getElementById('deleteLockedUrlsBtn').addEventListener('click', () => handleDeleteLockedUrlsBtnClick(allElementObjects));
   document.getElementById('deletePassBtn').addEventListener('click', () => handleDeletePassBtnClick(allElementObjects));
@@ -25,6 +27,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(urlBeforeSearchParam, isCurrentUrlLockedObj, allElementObjects));
 });
+
+function handleUpdatePassButtonClick(allElementObjects) {
+  if (!matchPassword()) {
+    document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
+    deactivateAllPages(allElementObjects);
+    allElementObjects.page3Element.style.display = 'block';
+    return;
+  }
+  const newPassword = prompt('Enter new password:');
+  if (newPassword !== null && newPassword !== "") {
+    storePassword(newPassword);
+    document.getElementById('successMessageText').innerHTML = "Password updated successfully!";
+    deactivateAllPages(allElementObjects);
+    allElementObjects.page1Element.style.display = 'block';
+  }
+}
 
 function matchPassword() {
   const storedPassword = localStorage.getItem(localStoragePasswordKey);
@@ -117,15 +135,15 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj) {
 }
 
 async function getCurrentTabUrl() {
-  // let queryOptions = { active: true, lastFocusedWindow: true };
-  // let [tab] = await chrome.tabs.query(queryOptions);
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
 
-  // const currentUrl = tab.url;
+  const currentUrl = tab.url;
 
-  // const urlObject = new URL(currentUrl);
-  // const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
+  const urlObject = new URL(currentUrl);
+  const urlBeforeSearchParam = urlObject.origin + urlObject.pathname;
 
-  return "urlBeforeSearchParam";
+  return urlBeforeSearchParam;
 }
 
 function getAllElementObjects() {
