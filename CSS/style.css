@@ -43,9 +43,9 @@ h3 {
   display: none;
 }
 
-#page3 {
+/* #page3 {
   display: none;
-}
+} */
 
 #page4 {
   display: none;
@@ -153,7 +153,7 @@ h3 {
   border: 1px solid red;
 }
 
-.updatePassBtn, .forgotPassBtn, #deleteAllDataBtn {
+#updatePassBtn, #forgotPassBtn, #deleteAllDataBtn {
   color: black;
   width: 33%;
   margin: 0;
@@ -162,16 +162,20 @@ h3 {
   margin: 0 5px;
 }
 
-.updatePassBtn {
+#updatePassBtn {
   background-color: rgba(0, 255, 0, 0.526);
 }
 
-.forgotPassBtn {
+#forgotPassBtn {
   background-color: rgba(255, 255, 0, 0.600);
 }
 
 #deleteAllDataBtn {
   background-color: rgba(255, 0, 0, 0.476);
+}
+
+#lockOrUnlockBtn {
+  width: 100%
 }
 
 #deleteLockedUrlsBtn, #deletePassBtn {
@@ -182,17 +186,17 @@ h3 {
   background-color: rgba(255, 0, 0, 1);
 }
 
-.updatePassBtn:hover {
+#updatePassBtn:hover {
   background-color: rgb(0, 255, 0);
   border: 1px solid black;
 }
 
-.forgotPassBtn:hover {
+#forgotPassBtn:hover {
   background-color: yellow;
   border: 1px solid black;
 }
 
-.deleteAllDataBtn:hover {
+#deleteAllDataBtn:hover {
   background-color: rgb(245, 68, 68);
   border: 1px solid black;
 }

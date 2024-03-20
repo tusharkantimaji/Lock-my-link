@@ -10,8 +10,8 @@
   <h3 class="brandName">&#128526 LOCK MY LINK &#128584</h3>
 
   <div id="updateDataSection">
-    <button class="updatePassBtn btn">Update Password</button> 
-    <button class="forgotPassBtn btn">Forgot Password</button> 
+    <button id="updatePassBtn" class="btn">Update Password</button> 
+    <button id="forgotPassBtn" class="btn">Forgot Password</button> 
     <button id="deleteAllDataBtn" class="btn">Delete All Data</button> 
   </div>
 
@@ -25,8 +25,8 @@
     <div id="page1">
       <div class="successMessage">
         <h1>Congratulations!!!</h1>
-        <p>Password set Successfully</p>
-        <button class="goHomeBtn btn">Go Home</button>
+        <p id="successMessageText" ></p>
+        <button class="goHomeBtn btn">Home</button>
       </div>
     </div>
 
@@ -36,19 +36,19 @@
       <button id="lockOrUnlockBtn" class="btn"></button>
     </div>
 
-    <div id="page3">
+    <!-- <div id="page3">
       <div class="successMessage">
         <h1>Congratulations!!!</h1>
         <p>Successfully Updated</p>
         <button class="goHomeBtn btn">Go Home</button> 
       </div>
-    </div>
+    </div> -->
 
     <div id="page4">
       <div class="errorMessage">
         <h1>Sorry!!!</h1>
         <p id="errorMessageText">Something went wrong. Try again</p>
-        <button class="goHomeBtn btn">Go Home</button>
+        <button class="goHomeBtn btn">Home</button>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
         <button id="deleteLockedUrlsBtn" class="btn">Remove All Locked URLs</button>
         <button id="deletePassBtn" class="btn">Delete Password with Locked URLs</button>
       </div>
-      <button class="goHomeBtn btn">Go Home</button>
+      <button class="goHomeBtn btn">Home</button>
     </div>
 
   </div>
