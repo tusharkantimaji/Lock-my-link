@@ -39,7 +39,7 @@ function handleDeletePassBtnClick(allElementObjects) {
   if (!matchPassword()) {
     document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
     deactivateAllPages(allElementObjects);
-    allElementObjects.page4Element.style.display = 'block';
+    allElementObjects.page3Element.style.display = 'block';
     return;
   }
   localStorage.removeItem(localStoragePasswordKey);
@@ -53,7 +53,7 @@ function handleDeleteLockedUrlsBtnClick(allElementObjects) {
   if (!matchPassword()) {
     document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
     deactivateAllPages(allElementObjects);
-    allElementObjects.page4Element.style.display = 'block';
+    allElementObjects.page3Element.style.display = 'block';
     return;
   }
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
@@ -70,16 +70,15 @@ function handleDeleteLockedUrlsBtnClick(allElementObjects) {
 
 function handleDeleteDataButtonClick(allElementObjects) {
   deactivateAllPages(allElementObjects);
-  allElementObjects.page5Element.style.display = 'block';
+  allElementObjects.page4Element.style.display = 'block';
 }
 
 function deactivateAllPages(allElementObjects) {
   allElementObjects.page0Element.style.display = 'none';
   allElementObjects.page1Element.style.display = 'none';
   allElementObjects.page2Element.style.display = 'none';
-  // allElementObjects.page3Element.style.display = 'none';
+  allElementObjects.page3Element.style.display = 'none';
   allElementObjects.page4Element.style.display = 'none';
-  allElementObjects.page5Element.style.display = 'none';
 }
 
 function isUrlLocked(url) {
@@ -133,17 +132,15 @@ function getAllElementObjects() {
   const page0Element = document.getElementById('page0');
   const page1Element = document.getElementById('page1');
   const page2Element = document.getElementById('page2');
-  // const page3Element = document.getElementById('page3');
+  const page3Element = document.getElementById('page3');
   const page4Element = document.getElementById('page4');
-  const page5Element = document.getElementById('page5');
 
   return {
     page0Element,
     page1Element,
     page2Element,
-    // page3Element,
+    page3Element,
     page4Element,
-    page5Element,
   };
 }
 
@@ -186,7 +183,7 @@ function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjec
     updateLockAndUnlockButton(isCurrentUrlLockedObj);
   }
   else {
-    allElementObjects.page4Element.style.display = 'block';
+    allElementObjects.page3Element.style.display = 'block';
   }
   
   allElementObjects.page2Element.style.display = 'none';

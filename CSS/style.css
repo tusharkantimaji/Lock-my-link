@@ -43,18 +43,18 @@ h3 {
   display: none;
 }
 
-/* #page3 {
+#page3 {
   display: none;
-} */
+}
 
 #page4 {
   display: none;
-}
-
-#page5 {
-  display: none;
   text-align: center;
 }
+
+/* #page5 {
+  display: none;
+} */
 
 .successMessage {
   text-align: center;
