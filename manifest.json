@@ -21,5 +21,15 @@
   ],
   "background": {
     "service_worker": "JS/background.js"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["HTML/checkPassword.html"],
+      "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["JS/checkPassword.js"],
+      "matches": ["*://*/*"]
+    }
+  ]
 }
