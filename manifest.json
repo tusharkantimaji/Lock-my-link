@@ -26,6 +26,10 @@
     {
       "resources": ["HTML/checkPassword.html"],
       "matches": ["*://*/*"]
+    },
+    {
+      "resources": ["JS/checkPassword.js"],
+      "matches": ["*://*/*"]
     }
   ]
 }

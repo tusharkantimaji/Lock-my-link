@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
+  document.getElementById('deleteAllDataBtn').addEventListener('click', () => handleDeleteDataButtonClick(allElementObjects));
+  document.getElementById('deleteLockedUrlsBtn').addEventListener('click', () => handleDeleteLockedUrlsBtnClick(allElementObjects));
+  document.getElementById('deletePassBtn').addEventListener('click', () => handleDeletePassBtnClick(allElementObjects));
+
   const goHomeButtons = document.querySelectorAll('.goHomeBtn');
   goHomeButtons.forEach(button => {
     button.addEventListener('click', () => handleGoHomeClick(allElementObjects));
@@ -21,6 +25,55 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(urlBeforeSearchParam, isCurrentUrlLockedObj, allElementObjects));
 });
+
+function matchPassword() {
+  const storedPassword = localStorage.getItem(localStoragePasswordKey);
+  const password = prompt('Enter password:');
+  if (password !== null && storedPassword === password) {
+    return true;
+  }
+  return false;
+}
+
+function handleDeletePassBtnClick(allElementObjects) {
+  localStorage.removeItem(localStoragePasswordKey);
+  localStorage.removeItem(localStorageLockedUrlsKey);
+  deactivateAllPages(allElementObjects);
+  allElementObjects.page0Element.style.display = 'block';
+  allElementObjects.updateDataSectionElement.style.display = 'none';
+}
+
+function handleDeleteLockedUrlsBtnClick(allElementObjects) {
+  if (!matchPassword()) {
+    document.getElementById('errorMessageText').innerHTML("Password doesn't match!");
+    deactivateAllPages(allElementObjects);
+    allElementObjects.page4Element.style.display = 'block';
+    return;
+  }
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  const lockedUrlsKeys = Object.keys(lockedUrlsObj);
+  lockedUrlsKeys.forEach(url => {
+    delete lockedUrlsObj[url];
+  });
+  updateRules(lockedUrlsKeys.length + 1, lockedUrlsObj);
+  deactivateAllPages(allElementObjects);
+  allElementObjects.page3Element.style.display = 'block';
+}
+
+function handleDeleteDataButtonClick(allElementObjects) {
+  deactivateAllPages(allElementObjects);
+  allElementObjects.page5Element.style.display = 'block';
+}
+
+function deactivateAllPages(allElementObjects) {
+  allElementObjects.page0Element.style.display = 'none';
+  allElementObjects.page1Element.style.display = 'none';
+  allElementObjects.page2Element.style.display = 'none';
+  allElementObjects.page3Element.style.display = 'none';
+  allElementObjects.page4Element.style.display = 'none';
+  allElementObjects.page5Element.style.display = 'none';
+}
 
 function isUrlLocked(url) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
@@ -42,13 +95,13 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
     homePageInfo = {
       buttonText: 'Unlock',
       buttonColor: 'green',
-      descriptionMessage: 'To unlock this URL, Click the Unlock Button'
+      descriptionMessage: 'To unlock this URL, Click the Unlock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
     }
   } else {
     homePageInfo = {
       buttonText: 'Lock',
       buttonColor: 'red',
-      descriptionMessage: 'To lock this URL, Click the Lock Button'
+      descriptionMessage: 'To lock this URL, Click the Lock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
     }
   }
   allElementObjects.lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
@@ -76,6 +129,7 @@ function getAllElementObjects() {
   const page2Element = document.getElementById('page2');
   const page3Element = document.getElementById('page3');
   const page4Element = document.getElementById('page4');
+  const page5Element = document.getElementById('page5');
   const currentTabUrlElement = document.getElementById('currentTabUrl');
   const lockOrUnlockBtnElement = document.getElementById('lockOrUnlockBtn');
   const areYouSureElement = document.getElementById('areYouSure');
@@ -87,10 +141,11 @@ function getAllElementObjects() {
     page2Element,
     page3Element,
     page4Element,
+    page5Element,
     currentTabUrlElement,
     lockOrUnlockBtnElement,
     areYouSureElement,
-    updateDataSectionElement
+    updateDataSectionElement,
   };
 }
 
@@ -110,9 +165,7 @@ async function storePassword(password) {
 }
 
 function handleGoHomeClick(allElementObjects) {
-  allElementObjects.page1Element.style.display = 'none';
-  allElementObjects.page3Element.style.display = 'none';
-  allElementObjects.page4Element.style.display = 'none';
+  deactivateAllPages(allElementObjects);
   allElementObjects.page2Element.style.display = 'block'; //TODO: GRID
 }
 

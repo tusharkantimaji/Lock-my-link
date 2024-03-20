@@ -12,7 +12,7 @@
   <div id="updateDataSection">
     <button class="updatePassBtn btn">Update Password</button> 
     <button class="forgotPassBtn btn">Forgot Password</button> 
-    <button class="deleteAllDataBtn btn">Delete All Data</button> 
+    <button id="deleteAllDataBtn" class="btn">Delete All Data</button> 
   </div>
 
   <div  class="container">
@@ -47,9 +47,17 @@
     <div id="page4">
       <div class="errorMessage">
         <h1>Sorry!!!</h1>
-        <p>Something went wrong. Try again</p>
+        <p id="errorMessageText">Something went wrong. Try again</p>
         <button class="goHomeBtn btn">Go Home</button>
       </div>
+    </div>
+
+    <div id="page5">
+      <div class="deleteButtons">
+        <button id="deleteLockedUrlsBtn" class="btn">Remove All Locked URLs</button>
+        <button id="deletePassBtn" class="btn">Delete Password with Locked URLs</button>
+      </div>
+      <button class="goHomeBtn btn">Go Home</button>
     </div>
 
   </div>

@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         "type": "redirect",
         "redirect": {
           // "url": `https://38.media.tumblr.com/tumblr_ldbj01lZiP1qe0eclo1_500.gif`
-          "extensionPath": "/HTML/checkPassword.html"
+          "extensionPath": "/JS/checkPassword.js"
         },
       },
       "condition": { "urlFilter": url, "resourceTypes": ["main_frame"] }

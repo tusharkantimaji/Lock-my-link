@@ -51,6 +51,11 @@ h3 {
   display: none;
 }
 
+#page5 {
+  display: none;
+  text-align: center;
+}
+
 .successMessage {
   text-align: center;
   color: green;
@@ -148,7 +153,7 @@ h3 {
   border: 1px solid red;
 }
 
-.updatePassBtn, .forgotPassBtn, .deleteAllDataBtn {
+.updatePassBtn, .forgotPassBtn, #deleteAllDataBtn {
   color: black;
   width: 33%;
   margin: 0;
@@ -165,8 +170,16 @@ h3 {
   background-color: rgba(255, 255, 0, 0.600);
 }
 
-.deleteAllDataBtn {
+#deleteAllDataBtn {
   background-color: rgba(255, 0, 0, 0.476);
+}
+
+#deleteLockedUrlsBtn, #deletePassBtn {
+  background-color: rgba(255, 100, 0, 0.476);
+}
+
+#deleteLockedUrlsBtn:hover, #deletePassBtn:hover {
+  background-color: rgba(255, 0, 0, 1);
 }
 
 .updatePassBtn:hover {
@@ -182,4 +195,10 @@ h3 {
 .deleteAllDataBtn:hover {
   background-color: rgb(245, 68, 68);
   border: 1px solid black;
+}
+
+.deleteButtons {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 2px;
 }
