@@ -143,14 +143,25 @@ function lockUrl(currentUrl) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
   const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
   lockedUrlsObj[currentUrl] = true;
-  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(lockedUrlsObj));
+  updateRules(Object.keys(lockedUrlsObj).length - 1, lockedUrlsObj);
 }
 
 function unlockUrl(currentUrl) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
   const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
   delete lockedUrlsObj[currentUrl];
-  localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(lockedUrlsObj));
+  updateRules(Object.keys(lockedUrlsObj).length + 1, lockedUrlsObj);
+}
+
+function updateRules(currentRulesLength, updatedRules){
+  chrome.runtime.sendMessage({ action: 'updateRules', currentRulesLength, updatedRules }, (response) => {
+  if (response.success) {
+    localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(updatedRules));
+    console.log('Rules updated successfully');
+  } else {
+    console.error('Error updating rules');
+  }
+});
 }
 
 function decideLandingPageView(allElementObjects) {
