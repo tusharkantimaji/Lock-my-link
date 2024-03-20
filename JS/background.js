@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   const rules = chrome.runtime.getURL('rules.json');
   chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: [1, 2], // Remove existing rules
+    removeRuleIds: [],
     addRules: []
   });
 });
@@ -20,7 +20,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const rulesToAdd = Object.keys(updatedRules).map((url, i) => ({
       "id": i + 1,
       "priority": 1,
-      "action": { "type": "block" },
+      // "action": { "type": "block" },
+      "action": {
+        "type": "redirect",
+        "redirect": {
+          "url": `https://38.media.tumblr.com/tumblr_ldbj01lZiP1qe0eclo1_500.gif`
+        },
+      },
       "condition": { "urlFilter": url, "resourceTypes": ["main_frame"] }
     }));
 
@@ -31,6 +37,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       sendResponse({ success: true });
     });
 
-    return true; // Indicates that sendResponse will be called asynchronously
+    return true;
   }
 });

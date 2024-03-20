@@ -42,13 +42,13 @@ function updateLockAndUnlockButton(isCurrentUrlLockedObj, allElementObjects) {
     homePageInfo = {
       buttonText: 'Unlock',
       buttonColor: 'green',
-      descriptionMessage: 'To unlock this URL, Click the Unlock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
+      descriptionMessage: 'To unlock this URL, Click the Unlock Button'
     }
   } else {
     homePageInfo = {
       buttonText: 'Lock',
       buttonColor: 'red',
-      descriptionMessage: 'To lock this URL, Click the Lock Button' + "<br/>" + "Password: " + storedPassword + "<br/>" + "Locked URLs: " + lockedUrls
+      descriptionMessage: 'To lock this URL, Click the Lock Button'
     }
   }
   allElementObjects.lockOrUnlockBtnElement.innerHTML = homePageInfo.buttonText;
