@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('updatePassBtn').addEventListener('click', () => handleUpdatePassButtonClick(allElementObjects));
 
-  document.getElementById('deleteLockedUrlsBtn').addEventListener('click', () => handleDeleteLockedUrlsBtnClick(allElementObjects));
-  document.getElementById('deletePassBtn').addEventListener('click', () => handleDeletePassBtnClick(allElementObjects));
+  document.getElementById('unlockAllLinksBtn').addEventListener('click', () => handleUnlockAllLinksBtnClick(allElementObjects));
+  document.getElementById('reinstallBtn').addEventListener('click', () => handleReinstallBtnClick(allElementObjects));
 
   const goHomeButtons = document.querySelectorAll('.goHomeBtn');
   goHomeButtons.forEach(button => {
@@ -52,13 +52,15 @@ function matchPassword() {
   return false;
 }
 
-function handleDeletePassBtnClick(allElementObjects) {
+function handleReinstallBtnClick(allElementObjects) {
   if (!matchPassword()) {
     document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
     deactivateAllPages(allElementObjects);
     allElementObjects.page3Element.style.display = 'block';
     return;
   }
+  const idToRemove = getLockedUrlsIds();
+  updateRules(idToRemove, {});
   localStorage.removeItem(localStoragePasswordKey);
   localStorage.removeItem(localStorageLockedUrlsKey);
   deactivateAllPages(allElementObjects);
@@ -66,7 +68,19 @@ function handleDeletePassBtnClick(allElementObjects) {
   document.getElementById('updateDataSection').style.display = 'none';
 }
 
-function handleDeleteLockedUrlsBtnClick(allElementObjects) {
+function getLockedUrlsIds() {
+  const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
+  const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  const lockedUrlsKeys = Object.keys(lockedUrlsObj);
+  const idToRemove = [];
+  lockedUrlsKeys.forEach(url => {
+    idToRemove.push(lockedUrlsObj[url]);
+  });
+
+  return idToRemove;
+}
+
+function handleUnlockAllLinksBtnClick(allElementObjects) {
   if (!matchPassword()) {
     document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
     deactivateAllPages(allElementObjects);
@@ -76,10 +90,12 @@ function handleDeleteLockedUrlsBtnClick(allElementObjects) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
   const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
   const lockedUrlsKeys = Object.keys(lockedUrlsObj);
+  const idToRemove = [];
   lockedUrlsKeys.forEach(url => {
+    idToRemove.push(lockedUrlsObj[url]);
     delete lockedUrlsObj[url];
   });
-  updateRules(lockedUrlsKeys.length + 1, lockedUrlsObj);
+  updateRules(idToRemove, lockedUrlsObj);
   deactivateAllPages(allElementObjects);
   document.getElementById('successMessageText').innerHTML = "All URLs unlocked successfully!";
   allElementObjects.page1Element.style.display = 'block';
@@ -180,6 +196,7 @@ async function handleGoHomeClick(allElementObjects) {
 
 async function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElementObjects) {
   let successfulUpdate = false;
+  let successMessage = "";
   if (isCurrentUrlLockedObj.isCurrentUrlLocked) {
     if (!matchPassword()) {
       document.getElementById('errorMessageText').innerHTML = "Password doesn't match!";
@@ -189,14 +206,16 @@ async function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElemen
     }
     unlockUrl(currentUrl);
     successfulUpdate = true;
+    successMessage = "Link Unlocked successfully!";
   }
   else {
     lockUrl(currentUrl);
     successfulUpdate = true;
+    successMessage = "Link Locked successfully!";
   }
 
   if (successfulUpdate) {
-    document.getElementById('successMessageText').innerHTML = "Link Status updated successfully!";
+    document.getElementById('successMessageText').innerHTML = successMessage;
     allElementObjects.page1Element.style.display = 'block';
     isCurrentUrlLockedObj.isCurrentUrlLocked = !isCurrentUrlLockedObj.isCurrentUrlLocked;
     await updateLockAndUnlockButton();
@@ -211,19 +230,25 @@ async function lockOrUnlockBtnClick(currentUrl, isCurrentUrlLockedObj, allElemen
 function lockUrl(currentUrl) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
   const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
-  lockedUrlsObj[currentUrl] = true;
-  updateRules(Object.keys(lockedUrlsObj).length - 1, lockedUrlsObj);
+  const idToRemove = Object.keys(lockedUrlsObj).map((url) => {
+    return lockedUrlsObj[url];
+  });
+  lockedUrlsObj[currentUrl] = getCurrentDateTimeAsInt();
+  updateRules(idToRemove, lockedUrlsObj);
 }
 
 function unlockUrl(currentUrl) {
   const lockedUrls = localStorage.getItem(localStorageLockedUrlsKey);
   const lockedUrlsObj = lockedUrls ? JSON.parse(lockedUrls) : {};
+  const idToRemove = Object.keys(lockedUrlsObj).map((url) => {
+    return lockedUrlsObj[url];
+  });
   delete lockedUrlsObj[currentUrl];
-  updateRules(Object.keys(lockedUrlsObj).length + 1, lockedUrlsObj);
+  updateRules(idToRemove, lockedUrlsObj);
 }
 
-function updateRules(currentRulesLength, updatedRules){
-  chrome.runtime.sendMessage({ action: 'updateRules', currentRulesLength, updatedRules }, (response) => {
+function updateRules(idToRemove, updatedRules){
+  chrome.runtime.sendMessage({ action: 'updateRules', idToRemove, updatedRules }, (response) => {
   if (response.success) {
     localStorage.setItem(localStorageLockedUrlsKey, JSON.stringify(updatedRules));
     console.log('Rules updated successfully');
@@ -242,4 +267,13 @@ function decideLandingPageView(allElementObjects) {
     allElementObjects.page0Element.style.display = 'block';
     document.getElementById('updateDataSection').style.display = 'none';
   }
+}
+
+function getCurrentDateTimeAsInt() {
+  const currentDate = new Date();
+
+  const timestamp = currentDate.getTime();
+
+  const timestampInSeconds = Math.floor(timestamp / 1000);
+  return parseInt(timestampInSeconds);
 }
