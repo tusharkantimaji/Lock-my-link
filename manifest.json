@@ -14,7 +14,9 @@
     "activeTab",
     "webRequest",
     "declarativeNetRequest",
-    "declarativeNetRequestFeedback"
+    "declarativeNetRequestFeedback",
+    "identity",
+    "identity.email"
   ],
   "host_permissions": [
     "*://*/*"

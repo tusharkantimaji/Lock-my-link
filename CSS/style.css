@@ -146,7 +146,7 @@ h3 {
 }
 
 
-#updatePassBtn, #unlockAllLinksBtn, #reinstallBtn {
+#updatePassBtn, #forgotPassBtn, #unlockAllLinksBtn, #reinstallBtn {
   color: black;
   width: 50%;
   margin: 0;
@@ -157,6 +157,10 @@ h3 {
 
 #updatePassBtn {
   background-color: rgba(0, 255, 0, 0.526);
+}
+
+#forgotPassBtn {
+  background-color: rgba(70, 94, 247, 0.526);
 }
 
 #unlockAllLinksBtn {
@@ -173,6 +177,11 @@ h3 {
 
 #updatePassBtn:hover {
   background-color: rgb(0, 255, 0);
+  border: 1px solid black;
+}
+
+#forgotPassBtn:hover {
+  background-color: rgb(70, 94, 247);
   border: 1px solid black;
 }
 

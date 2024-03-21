@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById('setPasswordBtn').addEventListener('click', () => handleSetPasswordClick(allElementObjects));
 
   document.getElementById('updatePassBtn').addEventListener('click', () => handleUpdatePassButtonClick(allElementObjects));
+  document.getElementById('forgotPassBtn').addEventListener('click', () => handleForgotPassButtonClick(allElementObjects));
 
   document.getElementById('unlockAllLinksBtn').addEventListener('click', () => handleUnlockAllLinksBtnClick(allElementObjects));
   document.getElementById('reinstallBtn').addEventListener('click', () => handleReinstallBtnClick(allElementObjects));
@@ -26,6 +27,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById('lockOrUnlockBtn').addEventListener('click', () => lockOrUnlockBtnClick(urlBeforeSearchParam, isCurrentUrlLockedObj, allElementObjects));
 });
+
+async function handleForgotPassButtonClick(allElementObjects) {
+  deactivateAllPages(allElementObjects);
+  chrome.identity.getProfileUserInfo(function(userInfo) {
+    if (userInfo.email) {
+      const email = userInfo.email;
+      const storedPassword = localStorage.getItem(localStoragePasswordKey);
+      sendForgotPassEmail(email, storedPassword);
+      document.getElementById('successMessageText').innerHTML = "Password has been shared with the below email" + "<br/>" + "Email: " + email;
+      allElementObjects.page1Element.style.display = 'block';
+      return;
+    }
+    document.getElementById('errorMessageText').innerHTML = "Please login to your Google account!";
+    allElementObjects.page3Element.style.display = 'block';
+  });
+}
 
 function handleUpdatePassButtonClick(allElementObjects) {
   if (!matchPassword()) {
@@ -276,4 +293,8 @@ function getCurrentDateTimeAsInt() {
 
   const timestampInSeconds = Math.floor(timestamp / 1000);
   return parseInt(timestampInSeconds);
+}
+
+function sendForgotPassEmail(email, password) {
+  // TODO: Implement email sending functionality
 }
